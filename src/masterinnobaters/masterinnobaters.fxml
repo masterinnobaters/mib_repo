@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="600.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="masterinnobaters.HotelReservationController">
+  <children>
+    <VBox prefHeight="600.0" prefWidth="800.0" styleClass="theme" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <HBox prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="NEVER">
+          <children>
+            <Text fill="#808080" strokeType="OUTSIDE" strokeWidth="0.0" text="Hotel">
+              <font>
+                <Font size="28.0" fx:id="x1" />
+              </font>
+            </Text>
+            <Text font="$x1" scaleX="1.0000045173812164" scaleY="0.9999937347040251" strokeType="OUTSIDE" strokeWidth="0.0" text="Reservation" />
+          </children>
+          <VBox.margin>
+            <Insets bottom="15.0" left="10.0" right="15.0" top="20.0" />
+          </VBox.margin>
+        </HBox>
+        <SplitPane dividerPositions="0.2177734375" focusTraversable="true" VBox.vgrow="ALWAYS">
+          <items>
+            <VBox prefHeight="-1.0" prefWidth="-1.0">
+              <children>
+                <TabPane prefHeight="-1.0" prefWidth="-1.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                  <tabs>
+                    <Tab text="Reservation">
+                      <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      </content>
+                    </Tab>
+                    <Tab text="Others">
+                      <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      </content>
+                    </Tab>
+                  </tabs>
+                </TabPane>
+                <HBox id="HBox" alignment="CENTER" spacing="15.0" VBox.vgrow="NEVER">
+                  <children>
+                    <Button id="" fx:id="newIssue" mnemonicParsing="false" onAction="#newIssueFired" text="New" />
+                    <Button fx:id="saveIssue" mnemonicParsing="false" onAction="#saveIssueFired" text="Save" />
+                    <Button fx:id="deleteIssue" mnemonicParsing="false" onAction="#deleteIssueFired" text="Delete" />
+                  </children>
+                  <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </padding>
+                </HBox>
+              </children>
+            </VBox>
+            <SplitPane dividerPositions="0.15180265654648956" focusTraversable="true" orientation="VERTICAL">
+              <items>
+                <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
+                  <content>
+                    <AnchorPane prefHeight="-1.0" prefWidth="-1.0">
+                      <children>
+                        <TableView id="t" fx:id="table" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="Name" fx:id="colName" />
+                            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="131.0" text="Phone/Mobile No." fx:id="colStatus" />
+                            <TableColumn prefWidth="75.0" text="Email" fx:id="colSynopsis" />
+                            <TableColumn prefWidth="75.0" text="Room No." />
+                            <TableColumn prefWidth="75.0" text="Time" />
+                            <TableColumn prefWidth="75.0" text="Pty. Size" />
+                            <TableColumn prefWidth="75.0" text="Leave By" />
+                            <TableColumn prefWidth="75.0" text="Smoking" />
+                            <TableColumn prefWidth="75.0" text="Table Location" />
+                          </columns>
+                        </TableView>
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </ScrollPane>
+                <AnchorPane fx:id="details">
+                  <children>
+                    <HBox id="HBox" alignment="CENTER" layoutY="10.0" spacing="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="220.0">
+                      <children>
+                        <Label fx:id="displayedIssueLabel" minWidth="-Infinity" text="PROJECT / ID" />
+                        <TextField fx:id="synopsis" prefWidth="281.0" text="SYNOPSIS" HBox.hgrow="ALWAYS" />
+                      </children>
+                    </HBox>
+                    <Label layoutX="14.0" layoutY="46.0" text="DESCRIPTION" />
+                    <TextArea id="desc" fx:id="descriptionValue" prefHeight="297.0" prefWidth="567.0" wrapText="true" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="76.0" />
+                  </children>
+                </AnchorPane>
+              </items>
+            </SplitPane>
+          </items>
+        </SplitPane>
+      </children>
+      <stylesheets>
+        <URL value="file:/F:/Projects/javafx_samples-2_2_79-windows/IssueTrackingLite/IssueTrackingLite/src/issuetrackinglite/IssueTrackingLite.css" />
+      </stylesheets>
+    </VBox>
+  </children>
+</AnchorPane>
