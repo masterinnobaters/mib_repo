@@ -1,37 +1,5 @@
-/*
- * Copyright (c) 2012 Oracle and/or its affiliates.
- * All rights reserved. Use is subject to license terms.
- *
- * This file is available and licensed under the following license:
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *  - Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *  - Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the distribution.
- *  - Neither the name of Oracle nor the names of its
- *    contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package masterinnobaters.model;
 
-import masterinnobaters.model.Issue.IssueStatus;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -46,60 +14,57 @@ import javafx.collections.MapChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
-public class TrackingServiceStub implements TrackingService {
+public class ReservationServiceStub implements ReservationService {
 
     // You add a project by adding an entry with an empty observable array list
     // of issue IDs in the projects Map.
-    final ObservableMap<String, ObservableList<String>> projectsMap;
-    {
-        final Map<String, ObservableList<String>> map = new TreeMap<String, ObservableList<String>>();
-        projectsMap = FXCollections.observableMap(map);
-        for (String s : newList("Project1", "Project2", "Project3", "Project4")) {
-            projectsMap.put(s, FXCollections.<String>observableArrayList());
-        }
-    }
-
-    // The projectNames list is kept in sync with the project's map by observing
-    // the projectsMap and modifying the projectNames list in consequence.
-    final MapChangeListener<String, ObservableList<String>> projectsMapChangeListener = new MapChangeListener<String, ObservableList<String>>() {
-        @Override
-        public void onChanged(Change<? extends String, ? extends ObservableList<String>> change) {
-            if (change.wasAdded()) projectNames.add(change.getKey());
-            if (change.wasRemoved()) projectNames.remove(change.getKey());
-        }
-    };
-    final ObservableList<String> projectNames;
-    {
-        projectNames = FXCollections.<String>observableArrayList();
-        projectNames.addAll(projectsMap.keySet());
-        projectsMap.addListener(projectsMapChangeListener);
-    }
+//    final ObservableMap<String, ObservableList<String>> reservationMap;
+//    {
+//        final Map<String, ObservableList<String>> map = new TreeMap<String, ObservableList<String>>();
+//        reservationMap = FXCollections.observableMap(map);
+//        for (String s : newList("Project1", "Project2", "Project3", "Project4")) {
+//            reservationMap.put(s, FXCollections.<String>observableArrayList());
+//        }
+//    }
+//
+//    // The projectNames list is kept in sync with the project's map by observing
+//    // the projectsMap and modifying the projectNames list in consequence.
+//    final MapChangeListener<String, ObservableList<String>> projectsMapChangeListener = new MapChangeListener<String, ObservableList<String>>() {
+//        @Override
+//        public void onChanged(Change<? extends String, ? extends ObservableList<String>> change) {
+//            if (change.wasAdded()) projectNames.add(change.getKey());
+//            if (change.wasRemoved()) projectNames.remove(change.getKey());
+//        }
+//    };
+//    final ObservableList<String> projectNames;
+//    {
+//        projectNames = FXCollections.<String>observableArrayList();
+//        projectNames.addAll(projectsMap.keySet());
+//        projectsMap.addListener(projectsMapChangeListener);
+//    }
 
     // A Issue stub.
-    public final class IssueStub implements ObservableIssue {
+    public final class ReservationStub implements ObservableReservation {
+        
         private final SimpleStringProperty id;
-        private final SimpleStringProperty projectName;
-        private final SimpleStringProperty title;
-        private final SimpleStringProperty description;
-        private final SimpleObjectProperty<IssueStatus> status =
-                new SimpleObjectProperty<IssueStatus>(IssueStatus.NEW);
+        private final SimpleObjectProperty<Customer> customer;
+        private final SimpleObjectProperty<List<Table>> tables;
+        private final SimpleStringProperty timeIn;
+        private final SimpleStringProperty timeOut;
 
-        IssueStub(String projectName, String id) {
-            this(projectName, id, null);
-        }
-        IssueStub(String projectName, String id, String title) {
-            assert projectNames.contains(projectName);
-            assert ! projectsMap.get(projectName).contains(id);
-            assert ! issuesMap.containsKey(id);
-            this.projectName = new SimpleStringProperty(projectName);
+        ReservationStub(String id, 
+                        Customer customer,
+                        List<Table> tables,
+                        String timeIn,
+                        String timeOut) {
+//            assert name.contains(name);
+//            assert ! projectsMap.get(projectName).contains(id);
+//            assert ! issuesMap.containsKey(id);
             this.id = new SimpleStringProperty(id);
-            this.title = new SimpleStringProperty(title);
-            this.description = new SimpleStringProperty("");
-        }
-
-        @Override
-        public IssueStatus getStatus() {
-            return status.get();
+            this.customer = new SimpleObjectProperty<>(customer);
+            this.tables = new SimpleObjectProperty<>(tables);
+            this.timeIn = new SimpleStringProperty(timeIn);
+            this.timeOut = new SimpleStringProperty(timeOut);
         }
 
         @Override
@@ -108,56 +73,50 @@ public class TrackingServiceStub implements TrackingService {
         }
 
         @Override
-        public String getProjectName() {
-            return projectName.get();
-        }
-
-        @Override
-        public String getSynopsis() {
-            return title.get();
-        }
-
-        private void setSynopsis(String title) {
-            this.title.set(title);
-        }
-
-        @Override
-        public String getDescription() {
-            return description.get();
-        }
-
-        private void setDescription(String description) {
-            this.description.set(description);
-        }
-
-        private void setStatus(IssueStatus issueStatus) {
-            this.status.set(issueStatus);
-        }
-
-        @Override
         public ObservableValue<String> idProperty() {
-            return id;
+            return this.id;
         }
 
         @Override
-        public ObservableValue<String> projectNameProperty() {
-            return projectName;
+        public ObservableValue<Customer> customerProperty() {
+            return this.customer;
         }
 
         @Override
-        public ObservableValue<IssueStatus> statusProperty() {
-            return status;
+        public ObservableValue<List<Table>> tablesProperty() {
+            return this.tables;
         }
 
         @Override
-        public ObservableValue<String> synopsisProperty() {
-            return title;
+        public ObservableValue<String> timeInProperty() {
+           return this.timeIn;
         }
 
         @Override
-        public ObservableValue<String> descriptionProperty() {
-            return description;
+        public ObservableValue<String> timeOutProperty() {
+            return this.timeOut;
         }
+
+        @Override
+        public Customer getCustomer() {
+            return this.customer.get();
+        }
+
+        @Override
+        public List<Table> getTables() {
+            return this.tables.get();
+        }
+
+        @Override
+        public String getTimeIn() {
+            return this.timeIn.get();
+        }
+
+        @Override
+        public String getTimeOut() {
+            return this.timeOut.get();
+        }
+
     }
 
     // You create new issue by adding a IssueStub instance to the issuesMap.

@@ -31,11 +31,9 @@
  */
 package masterinnobaters;
 
-import masterinnobaters.model.Issue;
-import masterinnobaters.model.Issue.IssueStatus;
-import masterinnobaters.model.ObservableIssue;
+import masterinnobaters.model.Reservation.IssueStatus;
 import masterinnobaters.model.TrackingService;
-import masterinnobaters.model.TrackingServiceStub;
+import masterinnobaters.model.ReservationServiceStub;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,41 +56,72 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import masterinnobaters.model.ObservableReservation;
+import masterinnobaters.model.Reservation;
 
 public class HotelReservationController implements Initializable {
 
     @FXML
-    Button newIssue;
+    Button reserve;
     @FXML
-    Button deleteIssue;
+    Button reset;
+    
     @FXML
-    Button saveIssue;
+    TableView<ObservableReservation> table;
+//    @FXML
+//    TableColumn<ObservableIssue, String> colName;
+//    @FXML
+//    TableColumn<ObservableIssue, IssueStatus> colStatus;
+//    @FXML
+//    TableColumn<ObservableIssue, String> colSynopsis;
+//    @FXML
+//    ListView<String> list;
+    
     @FXML
-    TableView<ObservableIssue> table;
+    TitledPane privatePane;
+    
     @FXML
-    TableColumn<ObservableIssue, String> colName;
+    TextField firstName;
     @FXML
-    TableColumn<ObservableIssue, IssueStatus> colStatus;
+    TextField lastName;
     @FXML
-    TableColumn<ObservableIssue, String> colSynopsis;
+    TextField phone;
     @FXML
-    ListView<String> list;
+    TextField email;
     @FXML
-    TextField synopsis;
+    TextField roomNo;
+    @FXML
+    TextField time;
+    @FXML
+    TextField ptySize;
+    @FXML
+    TextField leaveBy;
+    @FXML
+    TextField smokingInd;
+    @FXML
+    TextField tableLocation;
+    @FXML
+    TextField tableId;
+    @FXML
+    TextField tableRequest;
 
     private String displayedBugId; // the id of the bug displayed in the details section.
     private String displayedBugProject; // the name of the project of the bug displayed in the detailed section.
     @FXML
     Label displayedIssueLabel; // the displayedIssueLabel will contain a concatenation of the 
                                // the project name and the bug id.
-    @FXML
-    AnchorPane details;
-    @FXML
-    TextArea descriptionValue;
+//    @FXML
+//    AnchorPane details;
+//    @FXML
+//    TextArea descriptionValue;
+    
     ObservableList<String> projectsView = FXCollections.observableArrayList();
+    
     TrackingService model = null;
+    
     private TextField statusValue = new TextField();
-    final ObservableList<ObservableIssue> tableContent = FXCollections.observableArrayList();
+    
+    final ObservableList<ObservableReservation> tableContent = FXCollections.observableArrayList();
     
     
     /**
@@ -100,29 +129,29 @@ public class HotelReservationController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rsrcs) {
-        assert colName != null : "fx:id=\"colName\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert colStatus != null : "fx:id=\"colStatus\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert colSynopsis != null : "fx:id=\"colSynopsis\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert deleteIssue != null : "fx:id=\"deleteIssue\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert descriptionValue != null : "fx:id=\"descriptionValue\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert details != null : "fx:id=\"details\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert colName != null : "fx:id=\"colName\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert colStatus != null : "fx:id=\"colStatus\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert colSynopsis != null : "fx:id=\"colSynopsis\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert deleteIssue != null : "fx:id=\"deleteIssue\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert descriptionValue != null : "fx:id=\"descriptionValue\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert details != null : "fx:id=\"details\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
         assert displayedIssueLabel != null : "fx:id=\"displayedIssueLabel\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert newIssue != null : "fx:id=\"newIssue\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert saveIssue != null : "fx:id=\"saveIssue\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert synopsis != null : "fx:id=\"synopsis\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert newIssue != null : "fx:id=\"newIssue\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert saveIssue != null : "fx:id=\"saveIssue\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert synopsis != null : "fx:id=\"synopsis\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
         assert table != null : "fx:id=\"table\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
-        assert list != null : "fx:id=\"list\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
+//        assert list != null : "fx:id=\"list\" was not injected: check your FXML file 'IssueTrackingLite.fxml'.";
         
         System.out.println(this.getClass().getSimpleName() + ".initialize");
         configureButtons();
         configureDetails();
         configureTable();
         connectToService();
-        if (list != null) {
-            list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-            list.getSelectionModel().selectedItemProperty().addListener(projectItemSelected);
-            displayedProjectNames.addListener(projectNamesListener);
-        }
+//        if (list != null) {
+//            list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+//            list.getSelectionModel().selectedItemProperty().addListener(projectItemSelected);
+//            displayedProjectNames.addListener(projectNamesListener);
+//        }
     }
 
     /**
@@ -133,7 +162,7 @@ public class HotelReservationController implements Initializable {
     public void newIssueFired(ActionEvent event) {
         final String selectedProject = getSelectedProject();
         if (model != null && selectedProject != null) {
-            ObservableIssue issue = model.createIssueFor(selectedProject);
+            ObservableReservation issue = model.createIssueFor(selectedProject);
             if (table != null) {
                 // Select the newly created issue.
                 table.getSelectionModel().clearSelection();
@@ -141,7 +170,19 @@ public class HotelReservationController implements Initializable {
             }
         }
     }
-
+    
+    /**
+     * Called when the Private collapse is fired
+     *
+     * @param event the action event.
+     */
+    public void collapsePrivate(ActionEvent event) {
+        this.privatePane.setMinHeight(200);
+        this.privatePane.expandedProperty().addListener((observable, wasExpanded, isExpanded) -> 
+        this.privatePane.setMinHeight(isExpanded ? 200 : privatePane.USE_PREF_SIZE));
+        this.privatePane.setAnimated(false);
+    }
+    
     /**
      * Called when the DeleteIssue button is fired.
      *
@@ -155,8 +196,8 @@ public class HotelReservationController implements Initializable {
             //    deleting selected issues will modify the selection.
             final List<?> selectedIssue = new ArrayList<Object>(table.getSelectionModel().getSelectedItems());
             for (Object o : selectedIssue) {
-                if (o instanceof ObservableIssue) {
-                    model.deleteIssue(((ObservableIssue) o).getId());
+                if (o instanceof ObservableReservation) {
+                    model.deleteIssue(((ObservableReservation) o).getId());
                 }
             }
             table.getSelectionModel().clearSelection();
@@ -169,8 +210,8 @@ public class HotelReservationController implements Initializable {
      * @param event the action event.
      */
     public void saveIssueFired(ActionEvent event) {
-        final ObservableIssue ref = getSelectedIssue();
-        final Issue edited = new DetailsData();
+        final ObservableReservation ref = getSelectedIssue();
+        final Reservation edited = new DetailsData();
         SaveState saveState = computeSaveState(edited, ref);
         if (saveState == SaveState.UNSAVED) {
             model.saveIssue(ref.getId(), edited.getStatus(),
@@ -182,7 +223,7 @@ public class HotelReservationController implements Initializable {
         table.getItems().clear();
         displayedIssues = model.getIssueIds(getSelectedProject());
         for (String id : displayedIssues) {
-            final ObservableIssue issue = model.getIssue(id);
+            final ObservableReservation issue = model.getIssue(id);
             table.getItems().add(issue);
         }
         table.getSelectionModel().select(selectedRowIndex);
@@ -191,15 +232,15 @@ public class HotelReservationController implements Initializable {
     }
     
     private void configureButtons() {
-        if (newIssue != null) {
-            newIssue.setDisable(true);
-        }
-        if (saveIssue != null) {
-            saveIssue.setDisable(true);
-        }
-        if (deleteIssue != null) {
-            deleteIssue.setDisable(true);
-        }
+//        if (newIssue != null) {
+//            newIssue.setDisable(true);
+//        }
+//        if (saveIssue != null) {
+//            saveIssue.setDisable(true);
+//        }
+//        if (deleteIssue != null) {
+//            deleteIssue.setDisable(true);
+//        }
     }
     
     // An observable list of project names obtained from the model.
@@ -255,13 +296,13 @@ public class HotelReservationController implements Initializable {
                 }
                 if (c.wasRemoved() || c.wasReplaced()) {
                     for (String p : c.getRemoved()) {
-                        ObservableIssue removed = null;
+                        ObservableReservation removed = null;
                         // Issue already removed:
                         // we can't use model.getIssue(issueId) to get it.
                         // we need to loop over the table content instead.
                         // Then we need to remove it - but outside of the for loop
                         // to avoid ConcurrentModificationExceptions.
-                        for (ObservableIssue t : table.getItems()) {
+                        for (ObservableReservation t : table.getItems()) {
                             if (t.getId().equals(p)) {
                                 removed = t;
                                 break;
@@ -280,7 +321,7 @@ public class HotelReservationController implements Initializable {
     // its changes. Initializes the list widget with retrieved project names.
     private void connectToService() {
         if (model == null) {
-            model = new TrackingServiceStub();
+            model = new ReservationServiceStub();
             displayedProjectNames = model.getProjectNames();
         }
         projectsView.clear();
@@ -292,11 +333,11 @@ public class HotelReservationController implements Initializable {
     
     // This listener listen to changes in the table widget selection and
     // update the DeleteIssue button state accordingly.
-    private final ListChangeListener<ObservableIssue> tableSelectionChanged =
-            new ListChangeListener<ObservableIssue>() {
+    private final ListChangeListener<ObservableReservation> tableSelectionChanged =
+            new ListChangeListener<ObservableReservation>() {
 
                 @Override
-                public void onChanged(Change<? extends ObservableIssue> c) {
+                public void onChanged(Change<? extends ObservableReservation> c) {
                     updateDeleteIssueButtonState();
                     updateBugDetails();
                     updateSaveIssueButtonState();
@@ -308,16 +349,16 @@ public class HotelReservationController implements Initializable {
     }
 
     private void updateBugDetails() {
-        final ObservableIssue selectedIssue = getSelectedIssue();
+        final ObservableReservation selectedIssue = getSelectedIssue();
         if (details != null && selectedIssue != null) {
             if (displayedIssueLabel != null) {
                 displayedBugId = selectedIssue.getId();
                 displayedBugProject = selectedIssue.getProjectName();
                 displayedIssueLabel.setText( displayedBugId + " / " + displayedBugProject );
             }
-            if (synopsis != null) {
-                synopsis.setText(nonNull(selectedIssue.getSynopsis()));
-            }
+//            if (synopsis != null) {
+//                synopsis.setText(nonNull(selectedIssue.getSynopsis()));
+//            }
             if (statusValue != null) {
                 statusValue.setText(selectedIssue.getStatus().toString());
             }
@@ -360,7 +401,7 @@ public class HotelReservationController implements Initializable {
         INVALID, UNSAVED, UNCHANGED
     }
 
-    private final class DetailsData implements Issue {
+    private final class DetailsData implements Reservation {
 
         @Override
         public String getId() {
@@ -388,10 +429,11 @@ public class HotelReservationController implements Initializable {
 
         @Override
         public String getSynopsis() {
-            if (synopsis == null || isEmpty(synopsis.getText())) {
-                return "";
-            }
-            return synopsis.getText();
+//            if (synopsis == null || isEmpty(synopsis.getText())) {
+//                return "";
+//            }
+//            return synopsis.getText();
+            return "";
         }
 
         @Override
@@ -403,7 +445,7 @@ public class HotelReservationController implements Initializable {
         }
     }
 
-    private SaveState computeSaveState(Issue edited, Issue issue) {
+    private SaveState computeSaveState(Reservation edited, Reservation issue) {
         try {
             // These fields are not editable - so if they differ they are invalid
             // and we cannot save.
@@ -434,56 +476,56 @@ public class HotelReservationController implements Initializable {
 
     private void updateDeleteIssueButtonState() {
         boolean disable = true;
-        if (deleteIssue != null && table != null) {
-            final boolean nothingSelected = table.getSelectionModel().getSelectedItems().isEmpty();
-            disable = nothingSelected;
-        }
-        if (deleteIssue != null) {
-            deleteIssue.setDisable(disable);
-        }
+//        if (deleteIssue != null && table != null) {
+//            final boolean nothingSelected = table.getSelectionModel().getSelectedItems().isEmpty();
+//            disable = nothingSelected;
+//        }
+//        if (deleteIssue != null) {
+//            deleteIssue.setDisable(disable);
+//        }
     }
 
     private void updateSaveIssueButtonState() {
         boolean disable = true;
-        if (saveIssue != null && table != null) {
-            final boolean nothingSelected = table.getSelectionModel().getSelectedItems().isEmpty();
-            disable = nothingSelected;
-        }
-        if (disable == false) {
-            disable = computeSaveState(new DetailsData(), getSelectedIssue()) != SaveState.UNSAVED;
-        }
-        if (saveIssue != null) {
-            saveIssue.setDisable(disable);
-        }
+//        if (saveIssue != null && table != null) {
+//            final boolean nothingSelected = table.getSelectionModel().getSelectedItems().isEmpty();
+//            disable = nothingSelected;
+//        }
+//        if (disable == false) {
+//            disable = computeSaveState(new DetailsData(), getSelectedIssue()) != SaveState.UNSAVED;
+//        }
+//        if (saveIssue != null) {
+//            saveIssue.setDisable(disable);
+//        }
     }
 
     // Configure the table widget: set up its column, and register the
     // selection changed listener.
     private void configureTable() {
-        colName.setCellValueFactory(new PropertyValueFactory<ObservableIssue, String>("id"));
-        colSynopsis.setCellValueFactory(new PropertyValueFactory<ObservableIssue, String>("synopsis"));
-        colStatus.setCellValueFactory(new PropertyValueFactory<ObservableIssue, IssueStatus>("status"));
+//        colName.setCellValueFactory(new PropertyValueFactory<ObservableIssue, String>("id"));
+//        colSynopsis.setCellValueFactory(new PropertyValueFactory<ObservableIssue, String>("synopsis"));
+//        colStatus.setCellValueFactory(new PropertyValueFactory<ObservableIssue, IssueStatus>("status"));
 
         // In order to limit the amount of setup in Getting Started we set the width
         // of the 3 columns programmatically but one can do it from SceneBuilder.
-        colName.setPrefWidth(75);
-        colStatus.setPrefWidth(75);
-        colSynopsis.setPrefWidth(443);
+//        colName.setPrefWidth(75);
+//        colStatus.setPrefWidth(75);
+//        colSynopsis.setPrefWidth(443);
 
-        colName.setMinWidth(75);
-        colStatus.setMinWidth(75);
-        colSynopsis.setMinWidth(443);
+//        colName.setMinWidth(75);
+//        colStatus.setMinWidth(75);
+//        colSynopsis.setMinWidth(443);
 
-        colName.setMaxWidth(750);
-        colStatus.setMaxWidth(750);
-        colSynopsis.setMaxWidth(4430);
+//        colName.setMaxWidth(750);
+//        colStatus.setMaxWidth(750);
+//        colSynopsis.setMaxWidth(4430);
 
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         table.setItems(tableContent);
         assert table.getItems() == tableContent;
 
-        final ObservableList<ObservableIssue> tableSelection = table.getSelectionModel().getSelectedItems();
+        final ObservableList<ObservableReservation> tableSelection = table.getSelectionModel().getSelectedItems();
 
         tableSelection.addListener(tableSelectionChanged);
     }
@@ -502,11 +544,11 @@ public class HotelReservationController implements Initializable {
         return null;
     }
 
-    public ObservableIssue getSelectedIssue() {
+    public ObservableReservation getSelectedIssue() {
         if (model != null && table != null) {
-            List<ObservableIssue> selectedIssues = table.getSelectionModel().getSelectedItems();
+            List<ObservableReservation> selectedIssues = table.getSelectionModel().getSelectedItems();
             if (selectedIssues.size() == 1) {
-                final ObservableIssue selectedIssue = selectedIssues.get(0);
+                final ObservableReservation selectedIssue = selectedIssues.get(0);
                 return selectedIssue;
             }
         }
@@ -533,12 +575,12 @@ public class HotelReservationController implements Initializable {
             displayedIssues = null;
             table.getSelectionModel().clearSelection();
             table.getItems().clear();
-            if (newIssue != null) {
-                newIssue.setDisable(true);
-            }
-            if (deleteIssue != null) {
-                deleteIssue.setDisable(true);
-            }
+//            if (newIssue != null) {
+//                newIssue.setDisable(true);
+//            }
+//            if (deleteIssue != null) {
+//                deleteIssue.setDisable(true);
+//            }
         }
     }
 
@@ -548,34 +590,34 @@ public class HotelReservationController implements Initializable {
             table.getItems().clear();
             displayedIssues = model.getIssueIds(newProjectName);
             for (String id : displayedIssues) {
-                final ObservableIssue issue = model.getIssue(id);
+                final ObservableReservation issue = model.getIssue(id);
                 table.getItems().add(issue);
             }
             displayedIssues.addListener(projectIssuesListener);
-            if (newIssue != null) {
-                newIssue.setDisable(false);
-            }
+//            if (newIssue != null) {
+//                newIssue.setDisable(false);
+//            }
             updateDeleteIssueButtonState();
             updateSaveIssueButtonState();
         }
     }
 
     private void configureDetails() {
-        if (details != null) {
-            details.setVisible(false);
-        }
-
-        if (details != null) {
-            details.addEventFilter(EventType.ROOT, new EventHandler<Event>() {
-
-                @Override
-                public void handle(Event event) {
-                    if (event.getEventType() == MouseEvent.MOUSE_RELEASED
-                            || event.getEventType() == KeyEvent.KEY_RELEASED) {
-                        updateSaveIssueButtonState();
-                    }
-                }
-            });
-        }
+//        if (details != null) {
+//            details.setVisible(false);
+//        }
+//
+//        if (details != null) {
+//            details.addEventFilter(EventType.ROOT, new EventHandler<Event>() {
+//
+//                @Override
+//                public void handle(Event event) {
+//                    if (event.getEventType() == MouseEvent.MOUSE_RELEASED
+//                            || event.getEventType() == KeyEvent.KEY_RELEASED) {
+//                        updateSaveIssueButtonState();
+//                    }
+//                }
+//            });
+//        }
     }
 }

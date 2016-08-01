@@ -17,14 +17,16 @@ public class ConnectionSingleton {
     public static void main(String args[])throws Exception{
         
         Properties connectionProps = new Properties();
-        connectionProps.put("user", "a4201940_admin");
-        connectionProps.put("password", "2rAKebra");
+        connectionProps.put("user", "b5_18514851");
+        connectionProps.put("password", "fepRebU3");
         
         Connection con = DriverManager.getConnection(
                    "jdbc:mysql://" +
-                   "mysql7.000webhost.com" +
-                   ":3306/",
+                   "sql208.byethost5.com" +
+                   ":3306/b5_18514851_theaddress",
                    connectionProps);
+        
+        // jdbc:mysql://localhost:3306/karthicraj
         
         System.out.println("success!");
     }

@@ -31,16 +31,16 @@
  */
 package masterinnobaters.model;
 
-import masterinnobaters.model.Issue.IssueStatus;
+//import masterinnobaters.model.Reservation.IssueStatus;
 import javafx.collections.ObservableList;
 
 public interface TrackingService {
 
-    public ObservableList<String> getIssueIds(String projectName);
-    public ObservableList<String> getProjectNames();
-    public ObservableIssue getIssue(String tickectId);
-    public ObservableIssue createIssueFor(String projectName);
-    public void deleteIssue(String issueId);
-    public void saveIssue(String issueId, IssueStatus status,
-            String synopsis, String description);
+//    public ObservableList<String> getIssueIds(String projectName);
+//    public ObservableList<String> getProjectNames();
+//    public ObservableReservation getIssue(String tickectId);
+//    public ObservableReservation createIssueFor(String projectName);
+//    public void deleteIssue(String issueId);
+//    public void saveIssue(String issueId, IssueStatus status,
+//            String synopsis, String description);
 }
