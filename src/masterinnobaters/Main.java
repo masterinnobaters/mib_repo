@@ -32,7 +32,7 @@ public class Main extends Application {
             AnchorPane page = (AnchorPane) FXMLLoader.load(Main.class.getResource("masterinnobaters.fxml"));
             Scene scene = new Scene(page);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Issue Tracking Lite Sample");
+            primaryStage.setTitle("Hotel Reservation");
             primaryStage.show();
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
