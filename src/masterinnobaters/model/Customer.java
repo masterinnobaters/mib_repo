@@ -12,6 +12,10 @@ package masterinnobaters.model;
 public interface Customer {
     
     String getId();
-    String getName();
-    String getMobile();
+    String getFirstName();
+    String getLastName();
+    String getTitle();
+    String getMobileNo();
+    String getEmail();
+    String getRoomNo();
 }
